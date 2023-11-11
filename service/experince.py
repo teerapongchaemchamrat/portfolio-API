@@ -5,18 +5,7 @@ from models.experince import select_experince, insert_experince
 from pydantic import BaseModel
 from models.user import read_user
 from app.utils import verify_jwt
-# from main import PRIVATE_KEY
-
-from pathlib import Path
-import dotenv
-import os
-
-# load environment variables.
-BASE_DIR = Path(__file__).resolve().parent.parent
-dotenv.load_dotenv(BASE_DIR / ".env")
-
-PRIVATE_KEY = os.getenv("SECRET_KEY")
-EXPIRE = int(os.getenv("EXPIRATION_TIME_MINUTES"))
+from app.database import PRIVATE_KEY
 
 router_experince = APIRouter()
 
@@ -38,9 +27,9 @@ async def get_experince():
 @router_experince.post('/experince')
 async def create_experince(user_data = experince):
     try:
-        token_data = verify_jwt(user_data.token, PRIVATE_KEY)
-        if read_user(token_data['username']):
-            result = insert_experince(user_data.skill_id, user_data.title, user_data.description, user_data.company)
-            return { 'message': result }
+        # token_data = verify_jwt(user_data.token, PRIVATE_KEY)
+        # if read_user(token_data['username']):
+        result = insert_experince(user_data.skill_id, user_data.title, user_data.description, user_data.company)
+        return { 'message': result }
     except Exception as e:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=f"Error {e}")

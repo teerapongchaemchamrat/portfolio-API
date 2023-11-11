@@ -4,18 +4,8 @@ from fastapi import status
 from models.user import read_user, add_user
 from pydantic import BaseModel
 from app.utils import verify_jwt , encrypt_jwt , create_jwt_token
-# from main import PRIVATE_KEY, EXPIRE
+from app.database import PRIVATE_KEY, EXPIRE
 
-from pathlib import Path
-import dotenv
-import os
-
-# load environment variables.
-BASE_DIR = Path(__file__).resolve().parent.parent
-dotenv.load_dotenv(BASE_DIR / ".env")
-
-PRIVATE_KEY = os.getenv("SECRET_KEY")
-EXPIRE = int(os.getenv("EXPIRATION_TIME_MINUTES"))
 
 router_login = APIRouter()
 

@@ -9,6 +9,9 @@ import dotenv
 BASE_DIR = Path(__file__).resolve().parent.parent
 dotenv.load_dotenv(BASE_DIR / ".env")
 
+PRIVATE_KEY = os.getenv("SECRET_KEY")
+EXPIRE = int(os.getenv("EXPIRATION_TIME_MINUTES"))
+
 class Database(ABC):
     """
     Database context manager
