@@ -1,14 +1,12 @@
 from fastapi import APIRouter
 from fastapi.exceptions import HTTPException
 from fastapi import status
-from models.user import read_user, add_user
+from models.user import read_user, add_user ,read_all_user
 from pydantic import BaseModel
 from app.utils import verify_jwt , encrypt_jwt , create_jwt_token
 from app.database import PRIVATE_KEY, EXPIRE
 
-
 router_login = APIRouter()
-
 class User(BaseModel):
     username: str
     password: str
@@ -37,9 +35,23 @@ async def login(user_data: User):
 @router_login.post('/register')
 async def register(user_data: User):
     try:
-        payload = { "password" : user_data.password }
-        pwd = encrypt_jwt(payload, PRIVATE_KEY)
-        id = add_user(user_data.username, pwd)
-        return { 'id': id }
+        if len(read_all_user()) >= 1 :
+            return { 'message' : 'Can not create user any more.' }
+        else:
+            payload = { "password" : user_data.password }
+            pwd = encrypt_jwt(payload, PRIVATE_KEY)
+            id = add_user(user_data.username, pwd)
+            return { 'id': id }
+    except Exception as e:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=f"Error {e}")
+
+class Token(BaseModel):
+    access_token : str
+
+@router_login.post('/decode')
+async def decode(user_data: Token):
+    try:
+        result = verify_jwt(user_data.access_token, PRIVATE_KEY)
+        return { 'result': result }
     except Exception as e:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=f"Error {e}")

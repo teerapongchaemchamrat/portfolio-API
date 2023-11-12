@@ -28,12 +28,11 @@ async def get_portfolio():
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=f"Error {e}")
     
 @router_portfolio.post('/portfolio')
-async def create_portfolio(user_data = portfolio):
+async def create_portfolio(data: portfolio):
     try:
         # token_data = verify_jwt(user_data.token, PRIVATE_KEY)
         # if read_user(token_data['username']):
-        result = insert_portfolio(user_data.f_name, user_data.l_name, user_data.age, user_data.email, 
-                                    user_data.phone, user_data.line, user_data.address, user_data.education)
+        result = insert_portfolio(data.f_name, data.l_name, data.age, data.email, data.phone, data.line, data.address, data.education)
         return { 'message': result }
     except Exception as e:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=f"Error {e}")

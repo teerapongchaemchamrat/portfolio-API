@@ -1,6 +1,6 @@
 from app.database import PgDatabase
 
-def create_user():
+def create_users():
     with PgDatabase() as db:
         db.cursor.execute("""
             CREATE TABLE "users" (
@@ -42,7 +42,7 @@ def create_tables_portfolio():
 def create_tables_experince():
     with PgDatabase() as db:
         db.cursor.execute(f"""CREATE TABLE IF NOT EXISTS experince (
-            skill_id INTEGER,
+            skill_id SERIAL INTEGER,
             title VARCHAR(100),
             description VARCHAR(500),
             company VARCHAR(500),
@@ -58,7 +58,7 @@ def create_tables_experince():
 def create_tables_skill():
     with PgDatabase() as db:
         db.cursor.execute(f"""CREATE TABLE IF NOT EXISTS skill (
-            skill_id INTEGER,
+            skill_id SERIAL INTEGER,
             department VARCHAR(50),
             tools_name VARCHAR(50),
             programming_language VARCHAR(100),
@@ -74,7 +74,7 @@ def create_tables_skill():
 def create_tables_knowledge():
     with PgDatabase() as db:
         db.cursor.execute(f"""CREATE TABLE IF NOT EXISTS knowledge (
-            skill_id INTEGER,
+            skill_id SERIAL  INTEGER,
             title VARCHAR(50),
             description VARCHAR(50),
             create_date TIMESTAMPTZ DEFAULT NOW(),

@@ -18,8 +18,8 @@ def select_skill():
 
 def insert_skill(skill_id, dept, tools_name, language):
     with PgDatabase() as db:
-            sql = f"""INSERT INTO public.skill(skill_id, department, tools_name, programming_language)
-	                        VALUES ({skill_id}, {dept}, {tools_name}, {language});
+            sql = f"""INSERT INTO skill(skill_id, department, tools_name, programming_language)
+	                        VALUES ({skill_id}, '{dept}', '{tools_name}', '{language}');
                    """          
             db.cursor.execute(sql)
             db.connection.commit()
